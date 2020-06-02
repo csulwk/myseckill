@@ -9,6 +9,7 @@ import com.seckill.service.IUserService;
 import com.seckill.util.MD5Util;
 import com.seckill.util.UUIDUtil;
 import com.seckill.vo.UserVO;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,8 @@ import javax.validation.Valid;
  * 如果类注解了@RestController，下面的方法就不用每 都写@'ResponseBody'了。
  */
 @RestController
+@Slf4j
 public class LoginApiController extends BaseApiController {
-
-    private static Logger logger = LoggerFactory.getLogger(LoginApiController.class);
 
     @Autowired
     private IUserService userService;
@@ -40,7 +40,7 @@ public class LoginApiController extends BaseApiController {
     @RequestMapping(value = "/login")
     public Result<Object> login(@ModelAttribute(value="user") @Valid User user, BindingResult bindingResult, HttpSession session, String code, Model model, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
-            return Result.failure();//500, "error"
+            return Result.failure();
         }
         //get the user
         UserVO dbUser = userService.getUser(user.getUsername());
@@ -51,9 +51,9 @@ public class LoginApiController extends BaseApiController {
             if (dbUser.getPassword().equals(inputPassword)) {
 
 
-                System.out.println("===========================================");
-                System.out.println("login api 方法里：" + "username="+user.getUsername()+";password="+user.getPassword() );
-                System.out.println("===========================================");
+                log.info("===========================================");
+                log.info("login api 方法里：" + "username="+user.getUsername()+";password="+user.getPassword() );
+                log.info("===========================================");
 
                 //将登陆成功的user信息存入redis中
                 String token = UUIDUtil.getUUID();
@@ -61,14 +61,14 @@ public class LoginApiController extends BaseApiController {
                 Cookie cookie = new Cookie("token", token);
 
 
-                System.out.println("==============");
-                System.out.println("login api 方法里 token===== "+token);
-                System.out.println("==============");
+                log.info("==============");
+                log.info("login api 方法里 token===== "+token);
+                log.info("==============");
 
                 cookie.setMaxAge(3600);
                 cookie.setPath("/");
                 response.addCookie(cookie);
-                return Result.success();//success, "200"
+                return Result.success();
 
             }else {
                 return Result.failure(ResultCode.USER_LOGIN_ERROR);

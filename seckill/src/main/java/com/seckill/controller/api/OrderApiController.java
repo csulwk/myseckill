@@ -5,6 +5,7 @@ import com.seckill.base.result.Result;
 import com.seckill.model.Orders;
 import com.seckill.model.User;
 import com.seckill.service.IOrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class OrderApiController extends BaseApiController {
 
     @Autowired

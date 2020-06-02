@@ -22,7 +22,7 @@ Vue.use(Qs)
 Vue.use(Vuex)
 
 //使用Axios向后端服务器发送请求进行登录
-Axios.defaults.baseURL = 'http://localhost:8080'
+Axios.defaults.baseURL = 'http://localhost:9020'
 Axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 Axios.defaults.withCredentials = true
 

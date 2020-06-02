@@ -1,18 +1,15 @@
 package com.seckill.controller;
 
-import org.springframework.stereotype.Controller;
+import com.seckill.base.result.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class IndexController {
 
-
     @RequestMapping("/")
-    @ResponseBody
-    String home(){
-
-        return "hello world!";
+    public Result<String> home(){
+        return Result.success("home");
 
     }
 }

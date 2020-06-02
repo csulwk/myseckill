@@ -53,6 +53,7 @@ public class SeckillServiceImpl implements ISeckillService{
 
 
 
+    @Override
     public Orders seckill(User user, Course course){
         //减库存
         int success = courseService.reduceStockByCourseNo(course.getCourseNo());

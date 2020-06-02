@@ -3,6 +3,7 @@ package com.seckill.controller.api;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import com.seckill.model.User;
 import com.seckill.service.ISeckillService;
 
 @RestController
+@Slf4j
 public class SeckillApiController extends BaseApiController implements InitializingBean{
 
     @Autowired
@@ -32,9 +34,9 @@ public class SeckillApiController extends BaseApiController implements Initializ
         if(user == null){
             return Result.failure();
         }
-        System.out.println("===============================================");
-        System.out.println(" ① API里的username" + user.getUsername() );
-        System.out.println("===============================================");
+        log.info("===============================================");
+        log.info(" ① API里的username" + user.getUsername() );
+        log.info("===============================================");
         return seckillService.seckillFlow(user, courseNo, path, request);
     }
 

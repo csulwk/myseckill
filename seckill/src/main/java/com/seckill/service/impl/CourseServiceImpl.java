@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
 
 import com.seckill.repository.CourseRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -17,8 +16,11 @@ import com.seckill.model.Course;
 import com.seckill.redis.CourseRedis;
 import com.seckill.service.ICourseService;
 
+import javax.transaction.Transactional;
+
+
 @Service
-@Transactional
+@Transactional(rollbackOn = Exception.class)
 public class CourseServiceImpl implements ICourseService {
 
     @Autowired
@@ -52,7 +54,8 @@ public class CourseServiceImpl implements ICourseService {
     public Course findCourseByCourseNo(String courseNo) {
         //Optional 是Java 8 中新特性，可以做空值的判断
         Optional<Course> course = courseRepository.findById(courseNo);
-        return course.orElse(null);//course.isPresent()?user.get():null
+        // course.isPresent()?user.get():null
+        return course.orElse(null);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.seckill.model.Orders;
 import com.seckill.service.ICourseService;
 import com.seckill.service.IOrderService;
 import com.seckill.service.ISeckillService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.seckill.model.User;
 
 @Component
+@Slf4j
 public class KafkaConsumer {
 
     @Autowired
@@ -38,9 +40,9 @@ public class KafkaConsumer {
         String courseNo  = messages[0];
         String username  = messages[1];
 
-        System.out.println("===============================================");
-        System.out.println(" 三 /Kafka consumer 里面的username" + username );
-        System.out.println("===============================================");
+        log.info("===============================================");
+        log.info(" 三 /Kafka consumer 里面的username" + username );
+        log.info("===============================================");
 
         //在业务层已经过滤了很多请求，这里开始直接访问数据库
         Course course = courseService.findCourseByCourseNo(courseNo);
