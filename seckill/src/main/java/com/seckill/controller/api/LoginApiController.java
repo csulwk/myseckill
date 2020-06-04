@@ -1,6 +1,7 @@
 package com.seckill.controller.api;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.seckill.base.controller.BaseApiController;
 import com.seckill.base.result.Result;
 import com.seckill.base.result.ResultCode;
@@ -38,15 +39,20 @@ public class LoginApiController extends BaseApiController {
 
 
     @RequestMapping(value = "/login")
-    public Result<Object> login(@ModelAttribute(value="user") @Valid User user, BindingResult bindingResult, HttpSession session, String code, Model model, HttpServletResponse response) {
+    public Result<Object> login(@ModelAttribute(value="user") @Valid User user, BindingResult bindingResult, HttpSession session,
+                                String code, Model model, HttpServletResponse response) {
+        log.info("login...use:{}", JSONObject.toJSONString(user));
         if (bindingResult.hasErrors()) {
             return Result.failure();
         }
         //get the user
         UserVO dbUser = userService.getUser(user.getUsername());
+        log.info("dbUser:{}", JSONObject.toJSONString(dbUser));
 
         if (dbUser != null) {
-            String inputPassword = MD5Util.inputToDB(user.getPassword(), dbUser.getDbflag());
+            String inputPassword = MD5Util.formToDB(user.getPassword(), dbUser.getDbflag());
+            log.info("inPW:{}", inputPassword);
+            log.info("dbPW:{}", dbUser.getPassword());
             //判断密码是否相等
             if (dbUser.getPassword().equals(inputPassword)) {
 

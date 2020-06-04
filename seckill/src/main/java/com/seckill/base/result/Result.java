@@ -45,12 +45,7 @@ public class Result<T> {
         return result;
     }
 
-
-
-
     // success
-
-
     public static <T> Result<T> success() {
         Result<T> result = new Result<T>();
         result.setResultCode(ResultCode.SUCCESS);

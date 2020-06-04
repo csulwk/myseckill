@@ -30,9 +30,9 @@ public enum  ResultCode {
      * USER_开头
      * 错误码 500200 -500299
      */
-    USER_LOGIN_ERROR(500201, "登录失败，用户名或密码错误，请重新输入。"),
-    USER_HAS_EXISTED(500202, "用户名已存在，请更换用户名后重试。"),
-    USER_NOT_LOGIN(500203, "用户名未登录或登录已失效，请重新登录。");
+    USER_LOGIN_ERROR(500201, "登录失败，用户名或密码错误，请重新输入！"),
+    USER_HAS_EXISTED(500202, "用户名已存在，请更换用户名后重试！"),
+    USER_NOT_LOGIN(500203, "用户名未登录或登录已失效，请重新登录！");
 
 
     private Integer code;

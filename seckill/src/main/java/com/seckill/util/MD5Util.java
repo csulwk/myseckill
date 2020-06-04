@@ -1,53 +1,44 @@
 package com.seckill.util;
 
-
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class MD5Util {
 
-    private static final String salt = "springboot";
+    private static final String SALT = "springboot";
 
-    public static String md5(String src) {
+    private static String md5(String src) {
         return DigestUtils.md5Hex(src);
     }
 
-
     /**
-     * 对应第一次前端加密（加盐）
+     * 模拟前端加密：对原始密码进行加盐加密
      * @param inputPass
      * @return
      */
-    public static String inputToForm(String inputPass) {
-        String str = inputPass + salt;
-        return md5(str);
+    private static String inputToForm(String inputPass) {
+        return md5(inputPass + SALT);
 
     }
 
     /**
-     * 第二次加密
+     * 后端二次加密：对前端加密后的密码再加盐加密
      * @param formPass
      * @param dbSalt
      * @return
      */
     public static String formToDB(String formPass, String dbSalt) {
-        String str = dbSalt + formPass;
-        return md5(str);
+        return md5(dbSalt + formPass);
     }
 
-
+    /**
+     *对原始密码进行二重加密处理
+     * @param inputPass
+     * @param dbSalt
+     * @return
+     */
     public static String inputToDB(String inputPass, String dbSalt) {
         String formPass = inputToForm(inputPass);
-        String dbPass = formToDB(formPass, dbSalt);
-        return dbPass;
+        return formToDB(formPass, dbSalt);
     }
-
-    public static void main(String[] args) {
-        System.out.println(inputToDB("123456", "alex1"));
-
-    }
-
-
-
-
 
 }
