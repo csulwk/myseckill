@@ -7,6 +7,7 @@ import java.util.Optional;
 
 
 import com.seckill.repository.CourseRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,9 @@ import com.seckill.service.ICourseService;
 import javax.transaction.Transactional;
 
 
-@Service
+@Service("courseService")
 @Transactional(rollbackOn = Exception.class)
+@Slf4j
 public class CourseServiceImpl implements ICourseService {
 
     @Autowired
@@ -60,6 +62,7 @@ public class CourseServiceImpl implements ICourseService {
 
     @Override
     public int reduceStockByCourseNo(String courseNo) {
+        log.info("CourseServiceImpl -> courseNo:{}", courseNo);
         return courseRepository.reduceStockByCourseNo(courseNo);
     }
 

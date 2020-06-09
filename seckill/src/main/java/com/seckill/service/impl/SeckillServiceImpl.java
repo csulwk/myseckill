@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -24,8 +26,9 @@ import com.seckill.service.ISeckillService;
 import com.seckill.util.IpUtil;
 import com.seckill.util.UUIDUtil;
 
-@Service
-@Transactional
+@Service("seckillService")
+@Transactional(rollbackOn = Exception.class)
+@Slf4j
 public class SeckillServiceImpl implements ISeckillService{
 
     @Autowired
@@ -40,8 +43,9 @@ public class SeckillServiceImpl implements ISeckillService{
     @Autowired
     public SeckillRedis seckillRedis;
 
-
-    //使用KafkaTempalte进行发送消息
+    /**
+     * 使用KafkaTempalte进行发送消息
+     */
     @Autowired
     public KafkaTemplate<String, String > kafkaTempalte;
 
@@ -51,16 +55,14 @@ public class SeckillServiceImpl implements ISeckillService{
      */
     private static Map<String, Boolean> isSeckill = new HashMap<String, Boolean>();
 
-
-
     @Override
     public Orders seckill(User user, Course course){
         //减库存
         int success = courseService.reduceStockByCourseNo(course.getCourseNo());
 
-        System.out.println("===============================================");
-        System.out.println("四 /Orders 方法里的username" + user.getUsername() );
-        System.out.println("===============================================");
+        log.info("===============================================");
+        log.info("四 /Orders 方法里的username: " + user.getUsername() );
+        log.info("===============================================");
 
         //下订单
         if(success > 0){
@@ -86,7 +88,7 @@ public class SeckillServiceImpl implements ISeckillService{
 
     @Override
     public Result<Orders> seckillFlow(User user, String courseNo) {
-        System.out.println(" user = "+user.getUsername());
+        log.info(" user = "+user.getUsername());
 
         boolean isPass = isSeckill.get(courseNo);
         if(isPass){
@@ -205,7 +207,7 @@ public class SeckillServiceImpl implements ISeckillService{
         //ip验证
         String ip = IpUtil.getIpAddr(request);
 
-        System.out.println(ip);
+        log.info("IP: {}", ip);
         if(seckillRedis.incr(ip, 1) >= 100){
             return Result.failure(ResultCode.SECKILL_IP_OUTMAX);
         }
@@ -234,9 +236,9 @@ public class SeckillServiceImpl implements ISeckillService{
         }
 
 
-        System.out.println("===============================================");
-        System.out.println(" ② seckillFlow 方法里的username" + user.getUsername() );
-        System.out.println("===============================================");
+        log.info("===============================================");
+        log.info(" ② seckillFlow 方法里的username: " + user.getUsername() );
+        log.info("===============================================");
         //减库存 下订单
         kafkaTempalte.send("test",courseNo+","+user.getUsername());
         //Orders newOrder = seckill(user, course);

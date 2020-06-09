@@ -23,6 +23,8 @@
 
 <script>
 import PortalTemplate from './PortalTemplate'
+import { encryptWithSalt } from "../js/util/data-md5.js";
+import qs from 'qs'
 export default {
   name: 'register',
   components: {
@@ -63,15 +65,15 @@ export default {
       var self = this;
       self.$refs[formName].validate((valid) => {
          if (valid) {
-alert('可以注册了');
-           // self.$store.dispatch('register', {username: self.user.username, password: self.user.password})
-           // .then((response) => {
-           //   self.$message.success(response.data.message)
-           //   self.$router.push('/foo');
-           // })
-           // .catch((response) => {
-           //   self.$message.error(response.data.message)
-           // })
+           var mdUser = {username: self.user.username, password: encryptWithSalt(self.user.password)}
+           self.axios.post('/api/register', qs.stringify(mdUser))
+               .then((response) => {
+                   self.$message.success(response.data.message);
+                   self.$router.push('/login');
+               })
+               .catch((response) => {
+                   self.$message.error(response.data.message)
+               })
          }
        });
     }

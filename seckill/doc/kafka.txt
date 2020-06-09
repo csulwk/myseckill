@@ -24,12 +24,16 @@ cd /opt/kafka_2.12-2.5.0/bin
 # 接收消息
 ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mykafka --from-beginning
 
-5、重启问题
-kafka-manage由于强制关闭重启时提示进程存在：
-rm /var/lib/docker/overlay2/*/*/kafka-manager-1.3.1.8/RUNNING_PID
+5、docker启动kafka-manage报进程存在问题：
+在docker虚拟机命令行操作：
+sudo su
+pidPath=`find /var/lib/docker/overlay2/ -name "RUNNING_PID"`
+echo ${pidPath}
+rm ${pidPath}
 
 6、启动
 docker start zookeeper
+sleep 10
 docker start kafka
 docker start kafka-manager
 

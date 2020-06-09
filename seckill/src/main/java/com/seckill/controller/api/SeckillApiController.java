@@ -35,7 +35,7 @@ public class SeckillApiController extends BaseApiController implements Initializ
             return Result.failure();
         }
         log.info("===============================================");
-        log.info(" ① API里的username" + user.getUsername() );
+        log.info(" ① API里的username: " + user.getUsername() );
         log.info("===============================================");
         return seckillService.seckillFlow(user, courseNo, path, request);
     }

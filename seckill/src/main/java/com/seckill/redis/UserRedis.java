@@ -13,10 +13,4 @@ public class UserRedis extends BaseRedis<User> {
         return REDIS_KEY;
     }
 
-//
-//    public void add(String key, Long time, User user) {
-//        Gson gson = new Gson();
-//
-//    }
-
 }

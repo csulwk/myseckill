@@ -1,6 +1,6 @@
 {
-  "name": "seckill-front",
-  "description": "A Vue.js project",
+  "name": "seckill-viewer",
+  "description": "A seckill front project",
   "version": "1.0.0",
   "author": "k",
   "license": "MIT",
@@ -31,6 +31,7 @@
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
+    "js-md5": "^0.7.3",
     "node-sass": "^4.14.1",
     "sass-loader": "^7.3.1",
     "vue-loader": "^13.0.5",

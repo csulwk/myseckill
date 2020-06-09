@@ -35,7 +35,7 @@ public class RegisterController extends BaseApiController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public Result<User> register(@ModelAttribute(value = "user") @Valid User user, BindingResult bindingResult) {
-        log.info("register...use:{}", JSONObject.toJSONString(user));
+        log.info("register...user:{}", JSONObject.toJSONString(user));
         /*
           验证用户名和密码有误的话，返回注册页面
          */

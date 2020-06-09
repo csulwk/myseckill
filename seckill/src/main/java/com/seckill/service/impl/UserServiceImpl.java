@@ -5,13 +5,15 @@ import com.seckill.redis.UserRedis;
 import com.seckill.repository.UserRepository;
 import com.seckill.service.IUserService;
 import com.seckill.vo.UserVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
-@Service
-@Transactional
+@Service("userService")
+@Transactional(rollbackOn = Exception.class)
+@Slf4j
 public class UserServiceImpl implements IUserService {
 
     @Autowired
@@ -59,9 +61,9 @@ public class UserServiceImpl implements IUserService {
         BeanUtils.copyProperties(dbUser, user);
 
 
-        System.out.println("===========================================");
-        System.out.println("将用户信息放入redis之前，：" + "username="+user.getUsername()+";password="+user.getPassword() );
-        System.out.println("===========================================");
+        log.info("===========================================");
+        log.info("将用户信息放入redis之前，：" + "username="+user.getUsername()+";password="+user.getPassword() );
+        log.info("===========================================");
         //将信息放入redis
         userRedis.put(token, user, 3600);
     }

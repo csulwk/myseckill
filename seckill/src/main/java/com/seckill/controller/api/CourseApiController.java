@@ -22,13 +22,20 @@ public class CourseApiController extends BaseApiController {
     @Autowired
     private ICourseService courseService;
 
-    //获取所有的课程列表
+    /**
+     * 获取所有的课程列表
+     * @return Result<List<Course>>
+     */
     @RequestMapping(value = "/courseList", method = RequestMethod.GET)
     public Result<List<Course>> courseList(){
         return Result.success(courseService.findAllCourses());
     }
 
-    //课程详情
+    /**
+     * 课程详情
+     * @param courseNo courseNo
+     * @return Result<CourseVO>
+     */
     @RequestMapping(value = "/courseDetail/{courseNo}", method = RequestMethod.GET)
     public Result<CourseVO> courseDetail(@PathVariable String courseNo){
         return Result.success(CourseUtil.courseToCourseVO(courseService.findCourseByCourseNo(courseNo)));

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import com.seckill.model.Orders;
 import com.seckill.service.IOrderService;
 
-@Service
-@Transactional
+@Service("orderService")
+@Transactional(rollbackOn = Exception.class)
 public class OrderServiceImpl implements IOrderService{
 
     @Autowired
