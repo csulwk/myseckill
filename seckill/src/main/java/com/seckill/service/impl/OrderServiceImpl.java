@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import com.seckill.model.Orders;
 import com.seckill.service.IOrderService;
 
+/**
+ *
+ * @author kai
+ * @date 2020-6-10 23:10
+ */
 @Service("orderService")
 @Transactional(rollbackOn = Exception.class)
 public class OrderServiceImpl implements IOrderService{

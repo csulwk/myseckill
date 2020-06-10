@@ -20,6 +20,11 @@ import com.seckill.service.ICourseService;
 import javax.transaction.Transactional;
 
 
+/**
+ *
+ * @author kai
+ * @date 2020-6-10 23:11
+ */
 @Service("courseService")
 @Transactional(rollbackOn = Exception.class)
 @Slf4j

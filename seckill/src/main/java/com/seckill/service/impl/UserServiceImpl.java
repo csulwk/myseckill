@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
+/**
+ * @author kai
+ * @date 2020-6-10 23:12
+ */
 @Service("userService")
 @Transactional(rollbackOn = Exception.class)
 @Slf4j
@@ -26,11 +30,6 @@ public class UserServiceImpl implements IUserService {
     public User register(User user) {
         return userRepository.saveAndFlush(user);
     }
-
-//    @Override
-//    public User getUser(String username) {
-//        return userRepository.getOne(username);
-//    }
 
     @Override
     public UserVO getUser(String username) {
@@ -53,13 +52,10 @@ public class UserServiceImpl implements IUserService {
         return userVO;
     }
 
-
     @Override
     public void saveUserToRedisByToken(UserVO dbUser, String token){
-
         User user = new User();
         BeanUtils.copyProperties(dbUser, user);
-
 
         log.info("===========================================");
         log.info("将用户信息放入redis之前，：" + "username="+user.getUsername()+";password="+user.getPassword() );
@@ -67,7 +63,6 @@ public class UserServiceImpl implements IUserService {
         //将信息放入redis
         userRedis.put(token, user, 3600);
     }
-
 
     @Override
     public Object getUserFromRedisByToken(String token) {

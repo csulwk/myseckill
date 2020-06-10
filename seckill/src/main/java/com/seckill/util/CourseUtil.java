@@ -4,13 +4,15 @@ import com.seckill.vo.CourseVO;
 import com.seckill.model.Course;
 
 /**
- * 作用是 将course对象转化为CourseVO
+ * 将course对象转化为CourseVO
+ * @author kai
+ * @date 2020-6-10 23:58
  */
 public class CourseUtil {
 
-    public static final int COURSE_NOT_START = 0;
-    public static final int COURSE_PROCESSING = 1;
-    public static final int COURSE_COMPLETE = 2;
+    private static final int COURSE_NOT_START = 0;
+    private static final int COURSE_PROCESSING = 1;
+    private static final int COURSE_COMPLETE = 2;
 
     public static CourseVO courseToCourseVO(Course course){
         CourseVO courseVO = new CourseVO();
@@ -26,7 +28,6 @@ public class CourseUtil {
 
         //课程还未开始
         if(now < startTime){
-            courseStatus = COURSE_NOT_START;
             remainTime = (int) ((startTime - now)/1000);
         }else if(now > endTime){
             //选课已经结束

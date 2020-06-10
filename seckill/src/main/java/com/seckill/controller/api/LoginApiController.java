@@ -11,8 +11,6 @@ import com.seckill.util.MD5Util;
 import com.seckill.util.UUIDUtil;
 import com.seckill.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -50,7 +48,7 @@ public class LoginApiController extends BaseApiController {
         log.info("dbUser:{}", JSONObject.toJSONString(dbUser));
 
         if (dbUser != null) {
-            String inputPassword = MD5Util.formToDB(user.getPassword(), dbUser.getDbflag());
+            String inputPassword = MD5Util.formToDatabase(user.getPassword(), dbUser.getDbflag());
             log.info("inPW:{}", inputPassword);
             log.info("dbPW:{}", dbUser.getPassword());
             //判断密码是否相等

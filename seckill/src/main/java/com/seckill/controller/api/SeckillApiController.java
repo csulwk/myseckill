@@ -48,7 +48,6 @@ public class SeckillApiController extends BaseApiController implements Initializ
         return seckillService.seckillFlow(user, courseNo);
     }
 
-
     /**
      * 用于前端轮询， 用于给前端显示 订单是否完成： 1.排队中， 2. 已完成
      * @param user
@@ -66,7 +65,7 @@ public class SeckillApiController extends BaseApiController implements Initializ
     @RequestMapping(value="getPath/{courseNo}",method=RequestMethod.GET)
     public String getPath(User user, @PathVariable String courseNo){
         if(user == null){
-
+            return "user is null!";
         }
         return seckillService.getPath(user, courseNo);
     }

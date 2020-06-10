@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import com.seckill.base.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,34 +27,41 @@ import com.seckill.service.ISeckillService;
 import com.seckill.util.IpUtil;
 import com.seckill.util.UUIDUtil;
 
+/**
+ *
+ * @author kai
+ * @date 2020-6-10 23:11
+ */
 @Service("seckillService")
 @Transactional(rollbackOn = Exception.class)
 @Slf4j
 public class SeckillServiceImpl implements ISeckillService{
 
-    @Autowired
-    public ICourseService courseService;
 
-    @Autowired
-    public IOrderService orderService;
-
-    @Autowired
-    public CourseRedis courseRedis;
-
-    @Autowired
-    public SeckillRedis seckillRedis;
-
+    private ICourseService courseService;
+    private IOrderService orderService;
+    private CourseRedis courseRedis;
+    private SeckillRedis seckillRedis;
     /**
      * 使用KafkaTempalte进行发送消息
      */
-    @Autowired
-    public KafkaTemplate<String, String > kafkaTempalte;
-
+    private KafkaTemplate<String, String > kafkaTempalte;
     /**
      * 通过redis中的数据变化，来初始化这个变量
      * 这是在本地内存中加一个标志位flag, 判断是否被秒杀，若没有库存为true
      */
-    private static Map<String, Boolean> isSeckill = new HashMap<String, Boolean>();
+    private static Map<String, Boolean> isSeckill = new HashMap<>();
+
+    @Autowired
+    public SeckillServiceImpl(ICourseService courseService, IOrderService orderService,
+                              CourseRedis courseRedis, SeckillRedis seckillRedis,
+                              KafkaTemplate<String, String > kafkaTempalte) {
+        this.courseService = courseService;
+        this.orderService = orderService;
+        this.courseRedis = courseRedis;
+        this.seckillRedis = seckillRedis;
+        this.kafkaTempalte = kafkaTempalte;
+    }
 
     @Override
     public Orders seckill(User user, Course course){
@@ -78,44 +86,12 @@ public class SeckillServiceImpl implements ISeckillService{
         return null;
     }
 
-
-    /**
-     * seckillFlow 1
-     * @param user
-     * @param courseNo
-     * @return
-     */
-
     @Override
     public Result<Orders> seckillFlow(User user, String courseNo) {
         log.info(" user = "+user.getUsername());
-
-        boolean isPass = isSeckill.get(courseNo);
-        if(isPass){
-            return Result.failure(ResultCode.SECKILL_NO_QUOTE);
-        }
-        //判断库存redis 预减库存
-        double stockQuantity = courseRedis.decr(courseNo, -1);
-        if(stockQuantity <= 0){
-            //当库存没有时， 为true. 并且直接返回错误信息
-            isSeckill.put(courseNo, true);
-            return Result.failure(ResultCode.SECKILL_NO_QUOTE);
-        }
-        //判断是否已经购买
-        Orders order = orderService.getOrderByUsernameAndCourseNo(user.getUsername(), courseNo);
-        if(order != null){
-            return Result.failure(ResultCode.SECKILL_BOUGHT);
-        }
-        //进入队列，减库存 下订单
-        kafkaTempalte.send("test",courseNo+","+user.getUsername());
-        //Orders newOrder = seckill(user, course);
-        return Result.failure(ResultCode.SECKILL_LINE_UP);
+        return seckillCourse(user, courseNo);
     }
 
-
-    /**
-     * 用Redis缓存所有的课程
-     */
     @Override
     public void cacheAllCourse() {
         //从数据库中读出来
@@ -134,19 +110,14 @@ public class SeckillServiceImpl implements ISeckillService{
 
     }
 
-
-
     @Override
     public Result<Orders> seckillResult(User user, String courseNo) {
         Orders orders = orderService.getOrderByUsernameAndCourseNo(user.getUsername(), courseNo);
         if(orders == null){
             return Result.failure(ResultCode.SECKILL_LINE_UP);
         }
-
         return Result.success(orders);
     }
-
-
 
     @Override
     public String getPath(User user, String courseNo) {
@@ -155,70 +126,31 @@ public class SeckillServiceImpl implements ISeckillService{
         return path;
     }
 
-
-    /**
-     * 第三版: 增加动态地址
-     * @param user
-     * @param courseNo
-     * @param path
-     * @return
-     */
     @Override
-    public Result<Orders> seckillFlow(User user, String courseNo, String path) {
+    public Result<Orders> seckillFlow(User user, String courseNo, String path, HttpServletRequest request) {
+        //ip验证
+        String ip = IpUtil.getIpAddr(request);
+        log.info("IP: {}", ip);
+
+        if(seckillRedis.incr(ip, 1) >= Constants.IP_REQUEST_MAX_NUM){
+            return Result.failure(ResultCode.SECKILL_IP_OUTMAX);
+        }
         //验证path
         String redisPath = (String) seckillRedis.getString("path"+"_"+courseNo+"_"+user.getUsername());
         //如果地址不相同。返回错误信息
         if(!path.equals(redisPath)){
             return Result.failure(ResultCode.SECKILL_PATH_ERROR);
         }
-
-        boolean isPass = isSeckill.get(courseNo);
-        if(isPass){
-            return Result.failure(ResultCode.SECKILL_NO_QUOTE);
-        }
-        //判断库存redis 预减库存
-        double stockQuantity = courseRedis.decr(courseNo, -1);
-        if(stockQuantity <= 0){
-            isSeckill.put(courseNo, true);
-            return Result.failure(ResultCode.SECKILL_NO_QUOTE);
-        }
-        //判断是否已经购买
-        Orders order = orderService.getOrderByUsernameAndCourseNo(user.getUsername(), courseNo);
-        if(order != null){
-            return Result.failure(ResultCode.SECKILL_BOUGHT);
-        }
-        //减库存 下订单
-        kafkaTempalte.send("test",courseNo+","+ user.getUsername());
-        //Orders newOrder = seckill(user, course);
-        return Result.failure(ResultCode.SECKILL_LINE_UP);
+        return seckillCourse(user, courseNo);
     }
 
-
     /**
-     * 第四版
-     * @param user
-     * @param courseNo
-     * @param path
-     * @param request
-     * @return
+     * 抢购课程
+     * @param user user
+     * @param courseNo courseNo
+     * @return Result<Orders>
      */
-    @Override
-    public Result<Orders> seckillFlow(User user, String courseNo, String path, HttpServletRequest request) {
-        //ip验证
-        String ip = IpUtil.getIpAddr(request);
-
-        log.info("IP: {}", ip);
-        if(seckillRedis.incr(ip, 1) >= 100){
-            return Result.failure(ResultCode.SECKILL_IP_OUTMAX);
-        }
-
-
-        //验证path
-        String redisPath = (String) seckillRedis.getString("path"+"_"+courseNo+"_"+user.getUsername());
-        if(!path.equals(redisPath)){
-            return Result.failure(ResultCode.SECKILL_PATH_ERROR);
-        }
-
+    private Result<Orders> seckillCourse(User user, String courseNo) {
         boolean isPass = isSeckill.get(courseNo);
         if(isPass){
             return Result.failure(ResultCode.SECKILL_NO_QUOTE);
@@ -234,13 +166,12 @@ public class SeckillServiceImpl implements ISeckillService{
         if(order != null){
             return Result.failure(ResultCode.SECKILL_BOUGHT);
         }
-
 
         log.info("===============================================");
         log.info(" ② seckillFlow 方法里的username: " + user.getUsername() );
         log.info("===============================================");
         //减库存 下订单
-        kafkaTempalte.send("test",courseNo+","+user.getUsername());
+        kafkaTempalte.send("test",courseNo+","+ user.getUsername());
         //Orders newOrder = seckill(user, course);
         return Result.failure(ResultCode.SECKILL_LINE_UP);
     }

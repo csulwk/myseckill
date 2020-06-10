@@ -28,6 +28,7 @@ public class CourseApiController extends BaseApiController {
      */
     @RequestMapping(value = "/courseList", method = RequestMethod.GET)
     public Result<List<Course>> courseList(){
+        log.info("GET courseList...");
         return Result.success(courseService.findAllCourses());
     }
 

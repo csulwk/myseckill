@@ -9,8 +9,6 @@ import com.seckill.service.IUserService;
 import com.seckill.util.MD5Util;
 import com.seckill.util.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -48,7 +46,7 @@ public class RegisterController extends BaseApiController {
          */
         String salt = UUIDUtil.randomNumber();
         log.info("password: {}, salt: {}", user.getPassword(), salt);
-        String md5password = MD5Util.formToDB(user.getPassword(), salt);
+        String md5password = MD5Util.formToDatabase(user.getPassword(), salt);
         user.setDbflag(salt);
         user.setPassword(md5password);
         user.setId(2020);
