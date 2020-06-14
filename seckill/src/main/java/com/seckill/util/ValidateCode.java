@@ -11,24 +11,38 @@ import java.util.Random;
 
 /**
  * 验证码生成器
- *
- * @author
+ * @author kai
+ * @date 2020-6-14 22:16
  */
 public class ValidateCode {
-    // 图片的宽度。
+    /**
+     * 图片的宽度。
+     */
     private int width = 160;
-    // 图片的高度。
+    /**
+     * 图片的高度。
+     */
     private int height = 40;
-    // 验证码字符个数
+    /**
+     * 验证码字符个数
+     */
     private int codeCount = 5;
-    // 验证码干扰线数
+    /**
+     * 验证码干扰线数
+     */
     private int lineCount = 150;
-    // 验证码
+    /**
+     * 验证码
+     */
     private String code = null;
-    // 验证码图片Buffer
+    /**
+     * 验证码图片Buffer
+     */
     private BufferedImage buffImg = null;
 
-    // 验证码范围,去掉0(数字)和O(拼音)容易混淆的(小写的1和L也可以去掉,大写不用了)
+    /**
+     * 验证码范围,去掉0(数字)和O(拼音)容易混淆的(小写的1和L也可以去掉,大写不用了)
+     */
     private char[] codeSequence = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
             'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
@@ -64,12 +78,14 @@ public class ValidateCode {
         this.createCode();
     }
 
-    public void createCode() {
+    private void createCode() {
         int x = 0, fontHeight = 0, codeY = 0;
         int red = 0, green = 0, blue = 0;
 
-        x = width / (codeCount + 2);//每个字符的宽度(左右各空出一个字符)
-        fontHeight = height - 2;//字体的高度
+        // 每个字符的宽度(左右各空出一个字符)
+        x = width / (codeCount + 2);
+        // 字体的高度
+        fontHeight = height - 2;
         codeY = height - 4;
 
         // 图像buffer
@@ -87,10 +103,14 @@ public class ValidateCode {
 
         for (int i = 0; i < lineCount; i++) {
             // 设置随机开始和结束坐标
-            int xs = random.nextInt(width);//x坐标开始
-            int ys = random.nextInt(height);//y坐标开始
-            int xe = xs + random.nextInt(width / 8);//x坐标结束
-            int ye = ys + random.nextInt(height / 8);//y坐标结束
+            // x坐标开始
+            int xs = random.nextInt(width);
+            // y坐标开始
+            int ys = random.nextInt(height);
+            //x 坐标结束
+            int xe = xs + random.nextInt(width / 8);
+            //y 坐标结束
+            int ye = ys + random.nextInt(height / 8);
 
             // 产生随机的颜色值，让输出的每个干扰线的颜色值都将不同。
             red = random.nextInt(255);
@@ -101,7 +121,7 @@ public class ValidateCode {
         }
 
         // randomCode记录随机产生的验证码
-        StringBuffer randomCode = new StringBuffer();
+        StringBuilder randomCode = new StringBuilder();
         // 随机产生codeCount个字符的验证码。
         for (int i = 0; i < codeCount; i++) {
             String strRand = String.valueOf(codeSequence[random.nextInt(codeSequence.length)]);
@@ -123,7 +143,7 @@ public class ValidateCode {
         this.write(sos);
     }
 
-    public void write(OutputStream sos) throws IOException {
+    private void write(OutputStream sos) throws IOException {
         ImageIO.write(buffImg, "png", sos);
         sos.close();
     }

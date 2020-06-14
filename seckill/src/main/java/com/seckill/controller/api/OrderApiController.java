@@ -2,6 +2,7 @@ package com.seckill.controller.api;
 
 import com.seckill.base.controller.BaseApiController;
 import com.seckill.base.result.Result;
+import com.seckill.config.CurrentUser;
 import com.seckill.model.Orders;
 import com.seckill.model.User;
 import com.seckill.service.IOrderService;
@@ -19,18 +20,13 @@ import java.util.List;
 public class OrderApiController extends BaseApiController {
 
     @Autowired
-    IOrderService iOrderService;
-
+    IOrderService orderService;
 
     @RequestMapping(value = "orderList", method = RequestMethod.GET)
-    public Result<List<Orders>> orderList(User user) {
-
-
-
+    public Result<List<Orders>> orderList(@CurrentUser User user) {
         //按照订单时间的创建时间的降序来排列
-        List<Orders> ordersList = iOrderService.findAllByUsername(user.getUsername(), new Sort(Sort.Direction.DESC,"createDate"));
-
-
+        List<Orders> ordersList = orderService.findAllByUsername(user.getUsername(),
+                new Sort(Sort.Direction.DESC,"createDate"));
         return Result.success(ordersList);
 
     }

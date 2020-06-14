@@ -34,16 +34,12 @@ public class RegisterController extends BaseApiController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public Result<User> register(@ModelAttribute(value = "user") @Valid User user, BindingResult bindingResult) {
         log.info("register...user:{}", JSONObject.toJSONString(user));
-        /*
-          验证用户名和密码有误的话，返回注册页面
-         */
+        // 验证用户名和密码有误的话，返回注册页面
         if (bindingResult.hasErrors()) {
             return Result.failure(ResultCode.USER_LOGIN_ERROR);
         }
 
-        /*
-          对用户的密码进行md5加密处理
-         */
+        // 对用户的密码进行md5加密处理
         String salt = UUIDUtil.randomNumber();
         log.info("password: {}, salt: {}", user.getPassword(), salt);
         String md5password = MD5Util.formToDatabase(user.getPassword(), salt);

@@ -35,28 +35,25 @@ public class LoginApiController extends BaseApiController {
     @Autowired
     private IUserService userService;
 
-
     @RequestMapping(value = "/login")
     public Result<Object> login(@ModelAttribute(value="user") @Valid User user, BindingResult bindingResult, HttpSession session,
                                 String code, Model model, HttpServletResponse response) {
-        log.info("login...use:{}", JSONObject.toJSONString(user));
+        log.info("login: user={}", JSONObject.toJSONString(user));
         if (bindingResult.hasErrors()) {
             return Result.failure();
         }
         //get the user
         UserVO dbUser = userService.getUser(user.getUsername());
-        log.info("dbUser:{}", JSONObject.toJSONString(dbUser));
+        log.info("DBUser: {}", JSONObject.toJSONString(dbUser));
 
         if (dbUser != null) {
             String inputPassword = MD5Util.formToDatabase(user.getPassword(), dbUser.getDbflag());
-            log.info("inPW:{}", inputPassword);
-            log.info("dbPW:{}", dbUser.getPassword());
+            log.info("InputPW: {}", inputPassword);
+            log.info("TablePW: {}", dbUser.getPassword());
             //判断密码是否相等
             if (dbUser.getPassword().equals(inputPassword)) {
-
-
                 log.info("===========================================");
-                log.info("login api 方法里：" + "username="+user.getUsername()+";password="+user.getPassword() );
+                log.info("LOGIN: username={}, password={}", user.getUsername(), user.getPassword() );
                 log.info("===========================================");
 
                 //将登陆成功的user信息存入redis中
@@ -64,20 +61,16 @@ public class LoginApiController extends BaseApiController {
                 userService.saveUserToRedisByToken(dbUser, token);
                 Cookie cookie = new Cookie("token", token);
 
-
-                log.info("==============");
-                log.info("login api 方法里 token===== "+token);
-                log.info("==============");
-
+                log.info("===========================================");
+                log.info("LOGIN: token={}", token);
+                log.info("===========================================");
                 cookie.setMaxAge(3600);
                 cookie.setPath("/");
                 response.addCookie(cookie);
-                return Result.success();
-
+                return Result.success(token);
             }else {
                 return Result.failure(ResultCode.USER_LOGIN_ERROR);
             }
-
         }else {
             return Result.failure(ResultCode.USER_LOGIN_ERROR);
         }

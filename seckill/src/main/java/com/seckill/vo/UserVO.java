@@ -1,7 +1,10 @@
 package com.seckill.vo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class UserVO implements Serializable {
 
     private static final long serialVersionUID = -5785185994389280644L;
@@ -15,55 +18,5 @@ public class UserVO implements Serializable {
     private String dbflag;
 
     private String repassword;
-
-
-    public String getUsername() {
-        return username;
-    }
-
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
-
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public long getId() {
-        return id;
-    }
-
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-
-    public String getDbflag() {
-        return dbflag;
-    }
-
-
-    public void setDbflag(String dbflag) {
-        this.dbflag = dbflag;
-    }
-
-
-    public String getRepassword() {
-        return repassword;
-    }
-
-
-    public void setRepassword(String repassword) {
-        this.repassword = repassword;
-    }
 
 }

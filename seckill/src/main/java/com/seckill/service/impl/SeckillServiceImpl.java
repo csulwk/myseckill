@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.seckill.base.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -36,7 +37,6 @@ import com.seckill.util.UUIDUtil;
 @Transactional(rollbackOn = Exception.class)
 @Slf4j
 public class SeckillServiceImpl implements ISeckillService{
-
 
     private ICourseService courseService;
     private IOrderService orderService;
@@ -69,7 +69,7 @@ public class SeckillServiceImpl implements ISeckillService{
         int success = courseService.reduceStockByCourseNo(course.getCourseNo());
 
         log.info("===============================================");
-        log.info("四 /Orders 方法里的username: " + user.getUsername() );
+        log.info("四、Orders 方法里的username: " + user.getUsername() );
         log.info("===============================================");
 
         //下订单
@@ -94,12 +94,14 @@ public class SeckillServiceImpl implements ISeckillService{
 
     @Override
     public void cacheAllCourse() {
-        //从数据库中读出来
+        log.info("CacheAllCourse...");
+        //从数据库中读出来并缓存数据到Redis中
         List<Course> courseList = courseService.findAllCourses();
         if(courseList == null){
             return;
         }
         for(Course course : courseList){
+            log.info("CourseNO:{}, Course:{}", course.getCourseNo(), JSONObject.toJSONString(course));
             //60秒过期
             courseRedis.putString(course.getCourseNo(), course.getStockQuantity(), 60, true);
             //为了方便，再把course 这个对象直接存进来
@@ -168,7 +170,7 @@ public class SeckillServiceImpl implements ISeckillService{
         }
 
         log.info("===============================================");
-        log.info(" ② seckillFlow 方法里的username: " + user.getUsername() );
+        log.info(" 二、seckillCourse 方法里的username: " + user.getUsername() );
         log.info("===============================================");
         //减库存 下订单
         kafkaTempalte.send("test",courseNo+","+ user.getUsername());

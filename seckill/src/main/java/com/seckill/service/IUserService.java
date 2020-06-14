@@ -11,6 +11,11 @@ public interface IUserService {
 
      void saveUserToRedisByToken(UserVO dbUser, String token);
 
+    /**
+     * getUserFromRedisByToken
+     * @param token token
+     * @return Object
+     */
      Object getUserFromRedisByToken(String token);
 
 }

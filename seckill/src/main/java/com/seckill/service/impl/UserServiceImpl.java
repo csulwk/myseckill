@@ -39,7 +39,6 @@ public class UserServiceImpl implements IUserService {
             user = userRepository.findByUsername(username);
             if (user != null) {
                 userRedis.put(user.getUsername(), user, -1);
-
             }else {
                 //还为空 可能是没有注册
                 return null;
@@ -48,7 +47,6 @@ public class UserServiceImpl implements IUserService {
 
         //将user 转化为 uservo对象
         BeanUtils.copyProperties(user, userVO);
-
         return userVO;
     }
 
@@ -67,7 +65,5 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Object getUserFromRedisByToken(String token) {
         return userRedis.get(token);
-
-
     }
 }

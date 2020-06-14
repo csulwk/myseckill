@@ -41,13 +41,14 @@ public class KafkaConsumer {
 
     @KafkaListener(id="seconds-kill", topics = "test", groupId = "seconds-kill")
     public void listener(ConsumerRecord<?, ?> record) {
+        log.info("KafkaConsumer: record={}", record.value().toString());
         //处理接收到的data record.value()
         String[] messages = record.value().toString().split(",");
         String courseNo  = messages[0];
         String username  = messages[1];
 
         log.info("===============================================");
-        log.info(" 三 /Kafka consumer 里面的username: " + username );
+        log.info(" 三、Kafka consumer 里面的username: " + username );
         log.info("===============================================");
 
         //在业务层已经过滤了很多请求，这里开始直接访问数据库
