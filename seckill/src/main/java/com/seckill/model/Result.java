@@ -1,5 +1,7 @@
-package com.seckill.base.result;
+package com.seckill.model;
 
+
+import com.seckill.constant.ResultCode;
 
 /**
  * 静态方法可以帮助我们快速为javaBean赋值，得到我们想要的格式结果

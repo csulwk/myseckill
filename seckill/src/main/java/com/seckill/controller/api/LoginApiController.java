@@ -2,14 +2,14 @@ package com.seckill.controller.api;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.seckill.base.controller.BaseApiController;
-import com.seckill.base.result.Result;
-import com.seckill.base.result.ResultCode;
-import com.seckill.model.User;
+import com.seckill.controller.BaseApiController;
+import com.seckill.model.Result;
+import com.seckill.constant.ResultCode;
+import com.seckill.model.entity.User;
 import com.seckill.service.IUserService;
 import com.seckill.util.MD5Util;
 import com.seckill.util.UUIDUtil;
-import com.seckill.vo.UserVO;
+import com.seckill.model.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;

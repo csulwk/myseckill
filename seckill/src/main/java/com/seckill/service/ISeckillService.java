@@ -3,10 +3,10 @@ package com.seckill.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.seckill.base.result.Result;
-import com.seckill.model.Course;
-import com.seckill.model.Orders;
-import com.seckill.model.User;
+import com.seckill.model.Result;
+import com.seckill.model.entity.Course;
+import com.seckill.model.entity.Orders;
+import com.seckill.model.entity.User;
 
 public interface ISeckillService {
 

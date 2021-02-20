@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.seckill.base.controller.BaseApiController;
-import com.seckill.base.result.Result;
-import com.seckill.model.Orders;
-import com.seckill.model.User;
+import com.seckill.controller.BaseApiController;
+import com.seckill.model.Result;
+import com.seckill.model.entity.Orders;
+import com.seckill.model.entity.User;
 import com.seckill.service.ISeckillService;
 
 @RestController
@@ -39,7 +39,7 @@ public class SeckillApiController extends BaseApiController implements Initializ
             return Result.failure();
         }
         log.info("===============================================");
-        log.info(" 1、API里的username: " + user.getUsername() );
+        log.info(" 一、API里的username: " + user.getUsername() );
         log.info("===============================================");
         return seckillService.seckillFlow(user, courseNo, path, request);
     }

@@ -9,17 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
-import com.seckill.base.Constants;
+import com.seckill.constant.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import com.seckill.base.result.Result;
-import com.seckill.base.result.ResultCode;
-import com.seckill.model.Course;
-import com.seckill.model.Orders;
-import com.seckill.model.User;
+import com.seckill.model.Result;
+import com.seckill.constant.ResultCode;
+import com.seckill.model.entity.Course;
+import com.seckill.model.entity.Orders;
+import com.seckill.model.entity.User;
 import com.seckill.redis.CourseRedis;
 import com.seckill.redis.SeckillRedis;
 import com.seckill.service.ICourseService;
@@ -173,7 +173,7 @@ public class SeckillServiceImpl implements ISeckillService{
         log.info(" 二、seckillCourse 方法里的username: " + user.getUsername() );
         log.info("===============================================");
         //减库存 下订单
-        kafkaTempalte.send("test",courseNo+","+ user.getUsername());
+        kafkaTempalte.send(Constants.SECOND_KILL_TOPIC_NAME,courseNo+","+ user.getUsername());
         //Orders newOrder = seckill(user, course);
         return Result.failure(ResultCode.SECKILL_LINE_UP);
     }

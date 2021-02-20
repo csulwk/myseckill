@@ -1,10 +1,10 @@
 package com.seckill.service.impl;
 
-import com.seckill.model.User;
+import com.seckill.model.entity.User;
 import com.seckill.redis.UserRedis;
 import com.seckill.repository.UserRepository;
 import com.seckill.service.IUserService;
-import com.seckill.vo.UserVO;
+import com.seckill.model.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

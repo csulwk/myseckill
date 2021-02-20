@@ -1,4 +1,4 @@
-package com.seckill.base.controller;
+package com.seckill.controller;
 
 
 import org.springframework.web.bind.annotation.CrossOrigin;

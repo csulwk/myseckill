@@ -1,6 +1,6 @@
 package com.seckill.controller;
 
-import com.seckill.base.result.Result;
+import com.seckill.model.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

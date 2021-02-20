@@ -1,7 +1,8 @@
 package com.seckill.kafka;
 
-import com.seckill.model.Course;
-import com.seckill.model.Orders;
+import com.seckill.constant.Constants;
+import com.seckill.model.entity.Course;
+import com.seckill.model.entity.Orders;
 import com.seckill.service.ICourseService;
 import com.seckill.service.IOrderService;
 import com.seckill.service.ISeckillService;
@@ -10,7 +11,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import com.seckill.model.User;
+import com.seckill.model.entity.User;
 
 /**
  * kafka消费者来监听topic
@@ -39,7 +40,7 @@ public class KafkaConsumer {
         log.info("简单消费 -> topic:{}, partition:{}, value:{}", record.topic(), record.partition(), record.value());
     }
 
-    @KafkaListener(id="seconds-kill", topics = "test", groupId = "seconds-kill")
+    @KafkaListener(id="seconds-kill", topics = Constants.SECOND_KILL_TOPIC_NAME, groupId = "seconds-kill")
     public void listener(ConsumerRecord<?, ?> record) {
         log.info("KafkaConsumer: record={}", record.value().toString());
         //处理接收到的data record.value()

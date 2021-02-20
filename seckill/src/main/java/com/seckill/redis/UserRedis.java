@@ -1,6 +1,6 @@
 package com.seckill.redis;
 
-import com.seckill.model.User;
+import com.seckill.model.entity.User;
 import org.springframework.stereotype.Repository;
 
 @Repository

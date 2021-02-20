@@ -1,11 +1,11 @@
 package com.seckill.controller.api;
 
-import com.seckill.base.controller.BaseApiController;
-import com.seckill.base.result.Result;
-import com.seckill.model.Course;
+import com.seckill.controller.BaseApiController;
+import com.seckill.model.Result;
+import com.seckill.model.entity.Course;
 import com.seckill.service.ICourseService;
 import com.seckill.util.CourseUtil;
-import com.seckill.vo.CourseVO;
+import com.seckill.model.vo.CourseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

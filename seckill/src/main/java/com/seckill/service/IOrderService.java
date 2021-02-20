@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Sort;
 
-import com.seckill.model.Orders;
+import com.seckill.model.entity.Orders;
 
 public interface IOrderService {
 

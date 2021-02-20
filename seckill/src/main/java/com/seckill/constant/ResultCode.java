@@ -1,4 +1,4 @@
-package com.seckill.base.result;
+package com.seckill.constant;
 
 
 /**

@@ -1,6 +1,6 @@
 package com.seckill.redis;
 
-import com.seckill.model.Course;
+import com.seckill.model.entity.Course;
 import org.springframework.stereotype.Repository;
 
 

@@ -1,7 +1,7 @@
 package com.seckill.service;
 
-import com.seckill.model.User;
-import com.seckill.vo.UserVO;
+import com.seckill.model.entity.User;
+import com.seckill.model.vo.UserVO;
 
 public interface IUserService {
 

@@ -1,7 +1,7 @@
 package com.seckill.util;
 
-import com.seckill.vo.CourseVO;
-import com.seckill.model.Course;
+import com.seckill.model.vo.CourseVO;
+import com.seckill.model.entity.Course;
 
 /**
  * 将course对象转化为CourseVO

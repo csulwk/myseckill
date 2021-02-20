@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.seckill.model.Orders;
+import com.seckill.model.entity.Orders;
 import com.seckill.service.IOrderService;
 
 /**

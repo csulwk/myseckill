@@ -1,4 +1,4 @@
-package com.seckill.model;
+package com.seckill.model.entity;
 
 
 

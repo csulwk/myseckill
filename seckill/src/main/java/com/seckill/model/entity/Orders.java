@@ -1,4 +1,4 @@
-package com.seckill.model;
+package com.seckill.model.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

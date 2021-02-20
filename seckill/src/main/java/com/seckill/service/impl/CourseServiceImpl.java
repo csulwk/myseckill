@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
-import com.seckill.model.Course;
+import com.seckill.model.entity.Course;
 import com.seckill.redis.CourseRedis;
 import com.seckill.service.ICourseService;
 

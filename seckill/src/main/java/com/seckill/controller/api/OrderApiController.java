@@ -1,10 +1,10 @@
 package com.seckill.controller.api;
 
-import com.seckill.base.controller.BaseApiController;
-import com.seckill.base.result.Result;
+import com.seckill.controller.BaseApiController;
+import com.seckill.model.Result;
 import com.seckill.config.CurrentUser;
-import com.seckill.model.Orders;
-import com.seckill.model.User;
+import com.seckill.model.entity.Orders;
+import com.seckill.model.entity.User;
 import com.seckill.service.IOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

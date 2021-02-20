@@ -1,6 +1,6 @@
 package com.seckill.repository;
 
-import com.seckill.model.Course;
+import com.seckill.model.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +14,5 @@ public interface CourseRepository extends JpaRepository<Course, String> {
 
     @Modifying
     @Query("update Course c set stockQuantity = stockQuantity - 1 where courseNo = :courseNo and stockQuantity > 0")
-     int reduceStockByCourseNo(@Param(value = "courseNo")String courseNo);
+    int reduceStockByCourseNo(@Param(value = "courseNo")String courseNo);
 }

@@ -1,9 +1,9 @@
-package com.seckill.vo;
+package com.seckill.model.vo;
 
 
 import java.io.Serializable;
 
-import com.seckill.model.Course;
+import com.seckill.model.entity.Course;
 import lombok.Data;
 
 @Data

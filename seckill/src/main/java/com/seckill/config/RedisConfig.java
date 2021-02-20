@@ -1,4 +1,4 @@
-package com.seckill.redis;
+package com.seckill.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
