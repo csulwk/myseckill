@@ -1,9 +1,10 @@
-package com.seckill.config;
+package com.seckill.handler;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
+import com.seckill.annotation.CurrentUser;
 import com.seckill.model.entity.User;
 import com.seckill.service.IUserService;
 import lombok.extern.slf4j.Slf4j;

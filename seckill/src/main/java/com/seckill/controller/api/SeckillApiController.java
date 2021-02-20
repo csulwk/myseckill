@@ -4,7 +4,7 @@ package com.seckill.controller.api;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
-import com.seckill.config.CurrentUser;
+import com.seckill.annotation.CurrentUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

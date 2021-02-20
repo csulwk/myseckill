@@ -2,6 +2,7 @@ package com.seckill.config;
 
 import java.util.List;
 
+import com.seckill.handler.UserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
@@ -18,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 public class WebConfig extends WebMvcConfigurationSupport{
 
 	@Autowired
-	UserArgumentResolver userArgumentResolver;
+    UserArgumentResolver userArgumentResolver;
 
 	@Override
 	protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
